@@ -1,3 +1,3 @@
 # Pensioner Times
 
-Lock at [Pensioner Times](https://pensioner-times.onrender.com/)
+Look at [Pensioner Times](https://pensioner-times.onrender.com/)
