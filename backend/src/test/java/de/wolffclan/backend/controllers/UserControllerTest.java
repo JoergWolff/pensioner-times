@@ -80,6 +80,7 @@ class UserControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void postUser_ReturnsUser() throws Exception {
         // WHEN
         mockMvc.perform(MockMvcRequestBuilders.post(apiString)
