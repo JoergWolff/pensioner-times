@@ -1,4 +1,4 @@
-import {User} from "../../model/User.tsx";
+import {User} from "../../models/user/User.tsx";
 import {AgeCalculator} from "../../helpers/AgeCalculator.tsx";
 
 type UserProps = {
