@@ -135,12 +135,82 @@ class UserControllerTest {
                                             "firstName": "Test1",
                                             "lastName": "TestTheBest1",
                                             "email": "test@testmail.test",
-                                            "brithDay": "2022-02-12"
+                                            "birthDay": "2022-02-12"
                                         }
                                         """
                         ))
                 .andExpect(status().isBadRequest())
-        ;
+                .andExpect(content().string("Email exist..."));
+    }
+
+    @Test
+    @DirtiesContext
+    void postUser_ReturnTooFewInputs() throws Exception {
+        // GIVEN
+        User user = createUser();
+        userRepository.save(user);
+        // WHEN
+        mockMvc.perform(MockMvcRequestBuilders.post(apiString)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                """
+                                        {
+                                            "firstName": "Test1",
+                                            "lastName": "TestTheBest1",
+                                            "email": "test@testmail.test",
+                                            "birth*******Day": "2022-02-12"
+                                        }
+                                        """
+                        ))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Too few inputs..."));
+    }
+
+    @Test
+    @DirtiesContext
+    void getUserById_ReturnsOneUser() throws Exception {
+        // GIVEN
+        User user = createUser();
+        userRepository.save(user);
+        // WHEN
+        mockMvc.perform(MockMvcRequestBuilders.get(apiString + "/" + user.id()))
+                // THEN
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                                            {
+                                                "id": "1",
+                                                 "firstName": "Test",
+                                                 "lastName": "TestTheBest",
+                                                 "email": "test@testmail.test",
+                                                 "birthDay": "2009-10-25",
+                                                 "hobbies": [
+                                                                        {
+                                                                        "id": "1",
+                                                                        "name": "Test Hobby",
+                                                                        "isActive": true,
+                                                                        "createdAt": "2023-10-22T13:10:23.415Z",
+                                                                        "updatedAt": "2023-10-22T13:10:23.415Z"
+                                                                         }
+                                                                    ],
+                                                        "isActive": true,
+                                                        "createdAt": "2023-10-22T13:10:23.415Z",
+                                                        "updatedAt": "2023-10-22T13:10:23.415Z"
+                                                        }
+                        """));
+    }
+
+    @Test
+    @DirtiesContext
+    void getUserById_ReturnsNotFounded() throws Exception {
+        // GIVEN
+        User user = createUser();
+        userRepository.save(user);
+        String falseId = "1231";
+        // WHEN
+        mockMvc.perform(MockMvcRequestBuilders.get(apiString + "/" + falseId))
+                // THEN
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("User with id: " + falseId + " not founded..."));
     }
 
     private static User createUser() {
