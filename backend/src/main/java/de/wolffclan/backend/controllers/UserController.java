@@ -1,12 +1,11 @@
 package de.wolffclan.backend.controllers;
 
+import de.wolffclan.backend.models.user.NewUser;
 import de.wolffclan.backend.models.user.User;
 import de.wolffclan.backend.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -27,6 +26,18 @@ public class UserController {
             return ResponseEntity.ok(getAllUsers);
         } catch (NoSuchElementException exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @PostMapping
+    public ResponseEntity<Object> postUser(@RequestBody NewUser newUser) {
+
+        try {
+            User saveUser = userService.saveUser(newUser);
+            return ResponseEntity.ok(saveUser);
+        } catch (NoSuchElementException exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 }
