@@ -11,9 +11,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class UserServiceTest {
@@ -62,6 +63,66 @@ class UserServiceTest {
         assertEquals(newUser.birthDay(), savedUser.birthDay());
         verify(userRepository, times(1)).save(any(User.class));
 
+    }
+
+    @Test
+    void saveUser_ReturnsEmailExist() {
+        // GIVEN
+        NewUser newUser = new NewUser("Test", "TestTheBest", "test@testmail.test", birthDay, hobbies);
+
+        // WHEN
+        when(userRepository.existsByEmail(newUser.email())).thenReturn(true);
+        assertThrows(NoSuchElementException.class, () -> userService.saveUser(newUser));
+
+        // THEN
+        verify(userRepository, times(1)).existsByEmail(newUser.email());
+    }
+
+    @Test
+    void saveUser_ReturnsTooFewInputs() {
+        // GIVEN
+        NewUser newUser = new NewUser(null, "TestTheBest", "test@testmail.test", birthDay, hobbies);
+
+        // WHEN
+        assertThrows(NoSuchElementException.class, () -> userService.saveUser(newUser));
+
+        // THEN
+        verify(userRepository, never()).save(any(User.class));
+        verify(userRepository, never()).existsByEmail(anyString());
+    }
+
+    @Test
+    void getUserById_ReturnsValidUser() {
+        // GIVEN
+        String userId = "123";
+        User searchUser = new User(userId, "Test", "TestTheBest", "test@testmail.test", LocalDate.now(), null, true, Instant.now(), Instant.now());
+        when(userRepository.findById(userId)).thenReturn(Optional.of(searchUser));
+
+        // WHEN
+        User user = userService.getUserById(userId);
+
+        // THEN
+        assertNotNull(user);
+        assertEquals(userId, user.id());
+        assertEquals(searchUser.firstName(), user.firstName());
+        assertEquals(searchUser.lastName(), user.lastName());
+        assertEquals(searchUser.email(), user.email());
+
+        verify(userRepository, times(1)).findById(userId);
+    }
+
+    @Test
+    void getUserById_ReturnsInvalidId() {
+
+        // GIVEN
+        String invalidId = "invalid";
+        when(userRepository.findById(invalidId)).thenReturn(java.util.Optional.empty());
+
+        // WHEN
+        assertThrows(NoSuchElementException.class, () -> userService.getUserById(invalidId));
+
+        // THEN
+        verify(userRepository, times(1)).findById(invalidId);
     }
 
     private static User createUser() {

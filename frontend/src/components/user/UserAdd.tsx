@@ -16,7 +16,7 @@ export default function UserAdd() {
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
-    const [birthDay, setBirthday] = useState<string>("");
+    const [birthDay, setBirthDay] = useState<string>("");
     const [hobbies, setHobbies] = useState<Hobby[]>([]);
 
     function onChangeFirstName(event: ChangeEvent<HTMLInputElement>) {
@@ -32,7 +32,7 @@ export default function UserAdd() {
     }
 
     function onChangeBirthday(event: ChangeEvent<HTMLInputElement>) {
-        setBirthday(event.target.value);
+        setBirthDay(event.target.value);
     }
 
     function onChangeHobbies(event: FormEvent<HTMLFieldSetElement>) {

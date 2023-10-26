@@ -60,6 +60,10 @@ public class UserService {
         throw new NoSuchElementException("Too few inputs...");
     }
 
+    public User getUserById(String id) {
+        return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User with id: " + id + " not founded..."));
+    }
+
     private boolean existEmail(String email) {
         return userRepository.existsByEmail(email);
     }

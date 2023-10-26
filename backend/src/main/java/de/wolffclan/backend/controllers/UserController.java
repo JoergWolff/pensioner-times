@@ -40,4 +40,14 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Object> getUserById(@PathVariable String id){
+        try {
+           User searchUser = userService.getUserById(id);
+            return ResponseEntity.ok(searchUser);
+        } catch (NoSuchElementException exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+        }
+    }
 }
