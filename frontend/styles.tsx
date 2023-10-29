@@ -2,7 +2,7 @@ import {createGlobalStyle} from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
   :root {
-    --total-border: 0px solid lime;
+    --total-border: 1px solid lime;
     --main-background-color: darkslategrey;
     --main-color: wheat;
     --header-background-color: wheat;
@@ -68,10 +68,10 @@ export const GlobalStyle = createGlobalStyle`
     flex-direction: column;
     align-items: center;
     position: absolute;
-    top: 5em;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    top: 6em;
+    right: 5em;
+    bottom: 5em;
+    left: 5em;
     overflow: scroll;
     overflow-y: auto;
     overflow-x: hidden;
