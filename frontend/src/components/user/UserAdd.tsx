@@ -4,20 +4,26 @@ import {ChangeEvent, FormEvent, useState} from "react";
 import {User} from "../../models/user/User.tsx";
 import {ApiPaths} from "../../helpers/ApiPaths.tsx";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import {HobbyInputModel} from "../../models/hobby/HobbyInputModel.tsx";
+import HobbyInput from "../hobby/HobbyInput.tsx";
 import {Hobby} from "../../models/hobby/Hobby.tsx";
 
 export default function UserAdd() {
 
+    const params = useParams()
+    const paramId: string | undefined = params.userId
+
     const navigate = useNavigate();
     const uri: string = ApiPaths.USER_API;
 
-    const [fieldsetCounter, setFieldsetCounter] = useState(1);
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [birthDay, setBirthDay] = useState<string>("");
     const [hobbies, setHobbies] = useState<Hobby[]>([]);
+    const [fielSetCounter, setFieldsetCounter] = useState(1)
+    const [hobbyInputFields, setHobbyInputFields] = useState<HobbyInputModel[]>([])
 
     function onChangeFirstName(event: ChangeEvent<HTMLInputElement>) {
         setFirstName(event.target.value);
@@ -35,42 +41,28 @@ export default function UserAdd() {
         setBirthDay(event.target.value);
     }
 
+    function onHandleAddHobby() {
+        const newInput: HobbyInputModel = {
+            id: fielSetCounter.toString(),
+            value: ""
+        }
+        setHobbyInputFields([...hobbyInputFields, newInput])
+        setFieldsetCounter(fielSetCounter + 1)
+    }
+
+    function onHandleRemoveHobby(id: string) {
+        const inputHobbies = hobbyInputFields.filter(field => field.id != id)
+        setHobbyInputFields(inputHobbies)
+    }
+
     function onChangeHobbies(event: FormEvent<HTMLFieldSetElement>) {
         if (event) {
-            getValuesFromFieldSet("fieldSet")
+            getValuesFromFieldSet()
         }
     }
 
-    function addInputToFieldSet(id: string) {
-        if (id) {
-            const fieldSet = document.getElementById(id)
-            if (fieldSet) {
-                const newDiv = document.createElement("div")
-                newDiv.setAttribute("id", fieldsetCounter.toString())
-                fieldSet.appendChild(newDiv)
-                const newInputField = document.createElement("input")
-                newInputField.setAttribute("type", "text")
-                newInputField.setAttribute("name", "hobby")
-                newDiv.appendChild(newInputField)
-                const newButton = document.createElement("button")
-                newButton.innerHTML = "X"
-                newButton.onclick = () => removeInputFromFieldset(fieldsetCounter.toString())
-                newDiv.appendChild(newButton)
-                setFieldsetCounter(fieldsetCounter + 1)
-            }
-        }
-    }
-
-    function removeInputFromFieldset(id: string) {
-        const deleteInputField = document.getElementById(id);
-        if (deleteInputField) {
-            deleteInputField.remove();
-        }
-    }
-
-    function getValuesFromFieldSet(id: string) {
-        if (id) {
-            const fieldSet = document.getElementById(id);
+    function getValuesFromFieldSet() {
+        const fieldSet = document.getElementById("fieldSet");
             if (fieldSet) {
                 const inputFields = fieldSet.querySelectorAll("input[name='hobby']");
                 const values: Hobby[] = [];
@@ -82,7 +74,6 @@ export default function UserAdd() {
                 });
                 setHobbies(values)
             }
-        }
     }
 
     function onHandleCancel() {
@@ -92,6 +83,7 @@ export default function UserAdd() {
     function onHandleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
         if (event) {
+            getValuesFromFieldSet()
             const user: User = {
                 firstName: firstName,
                 lastName: lastName,
@@ -101,7 +93,7 @@ export default function UserAdd() {
             }
 
             axios.post(uri, user)
-                .then(() => navigate("/users"))
+                //.then(() => navigate("/users"))
                 .catch((error) => {
                     alert(error.response.data)
                 })
@@ -110,10 +102,10 @@ export default function UserAdd() {
 
     return (
         <>
-            <Header children={"New User"}/>
+            {paramId ? <Header children={"Detail User"}/> : <Header children={"New User"}/>}
             <Navigation/>
             <main>
-                <h2>Your Information's</h2>
+                {paramId ? <h2>Your Information's</h2> : <h2>Create Information's</h2>}
                 <form onSubmit={onHandleSubmit}>
                     <label htmlFor="firstName">Firstname:</label>
                     <input name="firstName" type="text" required onInput={onChangeFirstName} value={firstName}/>
@@ -125,8 +117,12 @@ export default function UserAdd() {
                     <input name="birthDay" type="date" required onInput={onChangeBirthday} value={birthDay}/>
                     <label htmlFor="hobbies">Hobbies:</label>
                     <fieldset name="hobbies" id="fieldSet" onInput={onChangeHobbies}>
+                        {hobbyInputFields.map((field) =>
+                            <HobbyInput key={field.id} hobbyInputModel={field}
+                                        onHandleRemoveHobby={onHandleRemoveHobby}/>)}
                     </fieldset>
-                    <input type="button" value="Add Hobby" onClick={() => addInputToFieldSet("fieldSet")}/>
+
+                    <input type="button" value="Add Hobby" onClick={onHandleAddHobby}/>
                     <div className="fieldset_div">
                         <input type="button" value="CANCEL" className="fieldset_button" onClick={onHandleCancel}/>
                         <input type="submit" value="SAVE" className="fieldset_button"/>
