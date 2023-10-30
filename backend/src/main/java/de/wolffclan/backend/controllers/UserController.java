@@ -50,4 +50,14 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
+
+    @PutMapping("/update/{userId}")
+    public ResponseEntity<Object> putUser(@PathVariable String userId, @RequestBody User user) {
+        try {
+            User savedUser = userService.updateUser(userId, user);
+            return ResponseEntity.ok(savedUser);
+        } catch (NoSuchElementException exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+        }
+    }
 }
