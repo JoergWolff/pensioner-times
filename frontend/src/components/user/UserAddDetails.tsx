@@ -8,9 +8,8 @@ import {useNavigate, useParams} from "react-router-dom";
 import {HobbyInputModel} from "../../models/hobby/HobbyInputModel.tsx";
 import HobbyInput from "../hobby/HobbyInput.tsx";
 import {Hobby} from "../../models/hobby/Hobby.tsx";
-import {createLogger} from "vite";
 
-export default function UserAdd() {
+export default function UserAddDetails() {
 
     const params = useParams()
     const paramId: string | undefined = params.userId
@@ -35,26 +34,26 @@ export default function UserAdd() {
     function getUserById(id: string) {
         axios.get(uri + "/" + id)
             .then((response) => setUserDetails(response.data))
-            .catch();
+            .catch((error) => {
+                alert(error.response.data)
+                navigate("/")
+            });
     }
 
     function setUserDetails(userInformation: User) {
         if (userInformation) {
-            console.log("userInformation")
             setFirstName(userInformation.firstName)
             setLastName(userInformation.lastName)
             setEmail(userInformation.email)
             setBirthDay(userInformation.birthDay)
             if (userInformation.hobbies) {
-                console.log("hobbies")
                 let counter: number = 1
                 const hobbyInputs: HobbyInputModel[] = []
                 userInformation.hobbies.forEach((hobby: Hobby) => {
-                    console.log(counter)
                     hobbyInputs.push({"id": counter.toString(), "value": hobby.name})
                     counter++
                 })
-                //setHobbyInputFields(hobbyInputs)
+                setHobbyInputFields(hobbyInputs)
             }
         }
     }
@@ -125,20 +124,23 @@ export default function UserAdd() {
                 birthDay: birthDay,
                 hobbies: hobbies
             }
-
-            axios.post(uri, user)
-                //.then(() => navigate("/users"))
-                .catch((error) => {
-                    alert(error.response.data)
-                })
+            if (paramId) {
+                alert("geht noch nicht")
+                navigate("/")
+            } else {
+                axios.post(uri, user)
+                    //.then(() => navigate("/users"))
+                    .catch((error) => {
+                        alert(error.response.data)
+                    })
+            }
         }
     }
 
-    console.log("UserAdd")
     return (
         <>
             {paramId ? <Header children={"Detail User"}/> : <Header children={"New User"}/>}
-            <Navigation/>
+            <Navigation site={"UserAddDetails"}/>
             <main>
                 {paramId ? <h2>Your Information's</h2> : <h2>Create Information's</h2>}
                 <form onSubmit={onHandleSubmit}>
@@ -160,7 +162,10 @@ export default function UserAdd() {
                     <input type="button" value="Add Hobby" onClick={onHandleAddHobby}/>
                     <div className="fieldset_div">
                         <input type="button" value="CANCEL" className="fieldset_button" onClick={onHandleCancel}/>
-                        <input type="submit" value="SAVE" className="fieldset_button"/>
+                        {paramId ?
+                            <input type="submit" value="UPDATE" className="fieldset_button"/>
+                            :
+                            <input type="submit" value="SAVE" className="fieldset_button"/>}
                     </div>
                 </form>
             </main>

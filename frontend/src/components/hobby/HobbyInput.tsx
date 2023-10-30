@@ -6,10 +6,9 @@ type HobbyInput = {
     onHandleRemoveHobby: (id: string) => void,
 }
 export default function HobbyInput(props: HobbyInput) {
-    const [hobby, setHobby] = useState<string>("")
-    if (props.hobbyInputModel.value) {
-        setHobby(props.hobbyInputModel.value)
-    }
+    const [hobby, setHobby] = useState<string>(props.hobbyInputModel.value || "")
+
+
 
     function onHandleChange(event: ChangeEvent<HTMLInputElement>) {
         if (event) {
