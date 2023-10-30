@@ -1,6 +1,6 @@
 import Header from "../header/Header.tsx";
 import Navigation from "../navigation/Navigation.tsx";
-import {ChangeEvent, FormEvent, useEffect, useState} from "react";
+import {ChangeEvent, FormEvent, useState} from "react";
 import {User} from "../../models/user/User.tsx";
 import {ApiPaths} from "../../helpers/ApiPaths.tsx";
 import axios from "axios";
@@ -8,7 +8,6 @@ import {useNavigate, useParams} from "react-router-dom";
 import {HobbyInputModel} from "../../models/hobby/HobbyInputModel.tsx";
 import HobbyInput from "../hobby/HobbyInput.tsx";
 import {Hobby} from "../../models/hobby/Hobby.tsx";
-import {createLogger} from "vite";
 
 export default function UserAdd() {
 
@@ -25,39 +24,6 @@ export default function UserAdd() {
     const [hobbies, setHobbies] = useState<Hobby[]>([]);
     const [fielSetCounter, setFieldsetCounter] = useState(1)
     const [hobbyInputFields, setHobbyInputFields] = useState<HobbyInputModel[]>([])
-
-    useEffect(() => {
-        if (paramId) {
-            getUserById(paramId)
-        }
-    }, []);
-
-    function getUserById(id: string) {
-        axios.get(uri + "/" + id)
-            .then((response) => setUserDetails(response.data))
-            .catch();
-    }
-
-    function setUserDetails(userInformation: User) {
-        if (userInformation) {
-            console.log("userInformation")
-            setFirstName(userInformation.firstName)
-            setLastName(userInformation.lastName)
-            setEmail(userInformation.email)
-            setBirthDay(userInformation.birthDay)
-            if (userInformation.hobbies) {
-                console.log("hobbies")
-                let counter: number = 1
-                const hobbyInputs: HobbyInputModel[] = []
-                userInformation.hobbies.forEach((hobby: Hobby) => {
-                    console.log(counter)
-                    hobbyInputs.push({"id": counter.toString(), "value": hobby.name})
-                    counter++
-                })
-                //setHobbyInputFields(hobbyInputs)
-            }
-        }
-    }
 
     function onChangeFirstName(event: ChangeEvent<HTMLInputElement>) {
         setFirstName(event.target.value);
@@ -134,7 +100,6 @@ export default function UserAdd() {
         }
     }
 
-    console.log("UserAdd")
     return (
         <>
             {paramId ? <Header children={"Detail User"}/> : <Header children={"New User"}/>}
