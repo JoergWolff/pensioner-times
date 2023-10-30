@@ -23,7 +23,7 @@ export default function UserGallery() {
     return (
         <>
             <Header children={"User Gallery"}/>
-            <Navigation/>
+            <Navigation site={"UserGallery"}/>
             <main>
                 {users?.map((user) =>(
                     <div key={user.id}>

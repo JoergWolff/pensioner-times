@@ -1,6 +1,6 @@
 import Header from "../header/Header.tsx";
 import Navigation from "../navigation/Navigation.tsx";
-import {ChangeEvent, FormEvent, useState} from "react";
+import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import {User} from "../../models/user/User.tsx";
 import {ApiPaths} from "../../helpers/ApiPaths.tsx";
 import axios from "axios";
@@ -9,7 +9,7 @@ import {HobbyInputModel} from "../../models/hobby/HobbyInputModel.tsx";
 import HobbyInput from "../hobby/HobbyInput.tsx";
 import {Hobby} from "../../models/hobby/Hobby.tsx";
 
-export default function UserAdd() {
+export default function UserAddDetails() {
 
     const params = useParams()
     const paramId: string | undefined = params.userId
@@ -24,6 +24,39 @@ export default function UserAdd() {
     const [hobbies, setHobbies] = useState<Hobby[]>([]);
     const [fielSetCounter, setFieldsetCounter] = useState(1)
     const [hobbyInputFields, setHobbyInputFields] = useState<HobbyInputModel[]>([])
+
+    useEffect(() => {
+        if (paramId) {
+            getUserById(paramId)
+        }
+    }, []);
+
+    function getUserById(id: string) {
+        axios.get(uri + "/" + id)
+            .then((response) => setUserDetails(response.data))
+            .catch((error) => {
+                alert(error.response.data)
+                navigate("/")
+            });
+    }
+
+    function setUserDetails(userInformation: User) {
+        if (userInformation) {
+            setFirstName(userInformation.firstName)
+            setLastName(userInformation.lastName)
+            setEmail(userInformation.email)
+            setBirthDay(userInformation.birthDay)
+            if (userInformation.hobbies) {
+                let counter: number = 1
+                const hobbyInputs: HobbyInputModel[] = []
+                userInformation.hobbies.forEach((hobby: Hobby) => {
+                    hobbyInputs.push({"id": counter.toString(), "value": hobby.name})
+                    counter++
+                })
+                setHobbyInputFields(hobbyInputs)
+            }
+        }
+    }
 
     function onChangeFirstName(event: ChangeEvent<HTMLInputElement>) {
         setFirstName(event.target.value);
@@ -91,19 +124,23 @@ export default function UserAdd() {
                 birthDay: birthDay,
                 hobbies: hobbies
             }
-
-            axios.post(uri, user)
-                //.then(() => navigate("/users"))
-                .catch((error) => {
-                    alert(error.response.data)
-                })
+            if (paramId) {
+                alert("geht noch nicht")
+                navigate("/")
+            } else {
+                axios.post(uri, user)
+                    //.then(() => navigate("/users"))
+                    .catch((error) => {
+                        alert(error.response.data)
+                    })
+            }
         }
     }
 
     return (
         <>
             {paramId ? <Header children={"Detail User"}/> : <Header children={"New User"}/>}
-            <Navigation/>
+            <Navigation site={"UserAddDetails"}/>
             <main>
                 {paramId ? <h2>Your Information's</h2> : <h2>Create Information's</h2>}
                 <form onSubmit={onHandleSubmit}>
@@ -125,7 +162,10 @@ export default function UserAdd() {
                     <input type="button" value="Add Hobby" onClick={onHandleAddHobby}/>
                     <div className="fieldset_div">
                         <input type="button" value="CANCEL" className="fieldset_button" onClick={onHandleCancel}/>
-                        <input type="submit" value="SAVE" className="fieldset_button"/>
+                        {paramId ?
+                            <input type="submit" value="UPDATE" className="fieldset_button"/>
+                            :
+                            <input type="submit" value="SAVE" className="fieldset_button"/>}
                     </div>
                 </form>
             </main>

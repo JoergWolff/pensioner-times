@@ -5,7 +5,7 @@ export default function Home(){
     return(
         <>
             <Header children={"Home"}/>
-            <Navigation/>
+            <Navigation site={"Home"}/>
             <main>
                 <h2>Nothing to see...</h2>
             </main>
