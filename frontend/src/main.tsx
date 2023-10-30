@@ -5,7 +5,7 @@ import {BrowserRouter} from "react-router-dom";
 import {GlobalStyle} from "../styles.tsx";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+ <React.StrictMode>
       <BrowserRouter>
           <GlobalStyle/>
           <App />
