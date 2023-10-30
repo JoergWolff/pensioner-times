@@ -2,7 +2,7 @@ import {createGlobalStyle} from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
   :root {
-    --total-border: 0px solid lime;
+    --total-border: 1px solid lime;
     --main-background-color: darkslategrey;
     --main-color: wheat;
     --header-background-color: wheat;
