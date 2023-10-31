@@ -158,6 +158,34 @@ class UserServiceTest {
 
     }
 
+    @Test
+    void deleteUser_ReturnsDeletedUser() {
+        // GIVEN
+        User existingUser = createUser();
+        when(userRepository.existsById("1")).thenReturn(true);
+        when(userRepository.findById("1")).thenReturn(Optional.of(existingUser));
+        // WHEN
+        User deletedUser = userService.deleteUser("1");
+        // THEN
+        assertNotNull(deletedUser);
+        assertEquals("1", deletedUser.id());
+        assertEquals(existingUser.firstName(), deletedUser.firstName());
+
+        verify(userRepository, times(1)).deleteById("1");
+    }
+
+    @Test
+    void deleteUser_ReturnsNoSuchElementException() {
+        // GIVEN
+        when(userRepository.existsById("1")).thenReturn(false);
+        // WHEN
+        assertThrows(NoSuchElementException.class, () -> {
+            userService.deleteUser("1");
+        });
+        // THEN
+        verify(userRepository, never()).deleteById(any());
+    }
+
     private static User createUser() {
 
         List<Hobby> hobbies = createHobbies();
@@ -184,5 +212,4 @@ class UserServiceTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return LocalDate.parse(birthDayAsString, formatter);
     }
-
 }
