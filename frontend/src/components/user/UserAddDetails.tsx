@@ -17,6 +17,7 @@ export default function UserAddDetails() {
     const navigate = useNavigate();
     const uri: string = ApiPaths.USER_API;
 
+    const [id,setId]= useState<string>("")
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -42,11 +43,15 @@ export default function UserAddDetails() {
 
     function setUserDetails(userInformation: User) {
         if (userInformation) {
+            if(userInformation.id){
+                setId(userInformation.id)
+            }
             setFirstName(userInformation.firstName)
             setLastName(userInformation.lastName)
             setEmail(userInformation.email)
             setBirthDay(userInformation.birthDay)
             if (userInformation.hobbies) {
+                setHobbies(userInformation.hobbies)
                 let counter: number = 1
                 const hobbyInputs: HobbyInputModel[] = []
                 userInformation.hobbies.forEach((hobby: Hobby) => {
@@ -118,6 +123,7 @@ export default function UserAddDetails() {
         if (event) {
             getValuesFromFieldSet()
             const user: User = {
+                id:id,
                 firstName: firstName,
                 lastName: lastName,
                 email: email,
@@ -125,11 +131,14 @@ export default function UserAddDetails() {
                 hobbies: hobbies
             }
             if (paramId) {
-                alert("geht noch nicht")
-                navigate("/")
+                axios.put(uri + "/update/" + user.id ,user)
+                    .then(()=> navigate("/users"))
+                    .catch((error)=>{
+                        alert(error.response.data)
+                    })
             } else {
                 axios.post(uri, user)
-                    //.then(() => navigate("/users"))
+                    .then(() => navigate("/users"))
                     .catch((error) => {
                         alert(error.response.data)
                     })
