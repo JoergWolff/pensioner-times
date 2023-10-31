@@ -179,9 +179,7 @@ class UserServiceTest {
         // GIVEN
         when(userRepository.existsById("1")).thenReturn(false);
         // WHEN
-        assertThrows(NoSuchElementException.class, () -> {
-            userService.deleteUser("1");
-        });
+        assertThrows(NoSuchElementException.class, () -> userService.deleteUser("1"));
         // THEN
         verify(userRepository, never()).deleteById(any());
     }
