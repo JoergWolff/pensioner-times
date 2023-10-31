@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -61,10 +62,60 @@ public class UserService {
     }
 
     public User getUserById(String id) {
-        return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User with id: " + id + " not founded..."));
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("User with id: " + id + " not founded..."));
+    }
+
+    public User updateUser(String userId, User user) {
+        if (existUserById(userId)) {
+            User existUser = getUserById(userId);
+            List<Hobby> newHobbies = user.hobbies().stream()
+                                        .map(this::updateHobby)
+                                        .collect(Collectors.toMap(Hobby::name,hobby -> hobby,(existing, replacement)->existing))
+                                        .values().stream().toList();
+
+            User savingUser = new User(
+                    existUser.id(),
+                    user.firstName(),
+                    user.lastName(),
+                    user.email(),
+                    user.birthDay(),
+                    newHobbies,
+                    user.isActive(),
+                    user.createdAt(),
+                    Instant.now()
+            );
+            userRepository.save(savingUser);
+
+            return savingUser;
+        }
+        throw new NoSuchElementException("User id dosen't exists...");
+    }
+
+    private Hobby updateHobby(Hobby hobby) {
+        if (hobby.id() != null) {
+            return new Hobby(
+                    hobby.id(),
+                    hobby.name(),
+                    hobby.isActive(),
+                    hobby.createdAt(),
+                    Instant.now()
+            );
+        }
+        return new Hobby(
+                UUID.randomUUID().toString(),
+                hobby.name(),
+                true,
+                Instant.now(),
+                Instant.now()
+        );
     }
 
     private boolean existEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    private boolean existUserById(String id) {
+        return userRepository.existsById(id);
     }
 }

@@ -22,7 +22,7 @@ export default function UserAddDetails() {
     const [email, setEmail] = useState<string>("");
     const [birthDay, setBirthDay] = useState<string>("");
     const [hobbies, setHobbies] = useState<Hobby[]>([]);
-    const [fielSetCounter, setFieldsetCounter] = useState(1)
+    const [fieldSetCounter, setFieldSetCounter] = useState(1)
     const [hobbyInputFields, setHobbyInputFields] = useState<HobbyInputModel[]>([])
 
     useEffect(() => {
@@ -76,11 +76,11 @@ export default function UserAddDetails() {
 
     function onHandleAddHobby() {
         const newInput: HobbyInputModel = {
-            id: fielSetCounter.toString(),
+            id: fieldSetCounter.toString(),
             value: ""
         }
         setHobbyInputFields([...hobbyInputFields, newInput])
-        setFieldsetCounter(fielSetCounter + 1)
+        setFieldSetCounter(fieldSetCounter + 1)
     }
 
     function onHandleRemoveHobby(id: string) {
