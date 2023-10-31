@@ -146,6 +146,14 @@ export default function UserAddDetails() {
         }
     }
 
+    function onHandleDelete() {
+        axios.delete(uri + "/delete/" + id)
+            .then(()=> navigate("/users"))
+            .catch((error)=>{
+                alert(error.response.data)
+            })
+    }
+
     return (
         <>
             {paramId ? <Header children={"Detail User"}/> : <Header children={"New User"}/>}
@@ -177,6 +185,7 @@ export default function UserAddDetails() {
                             <input type="submit" value="SAVE" className="fieldset_button"/>}
                     </div>
                 </form>
+                {paramId ? <button onClick={onHandleDelete}>DELETE</button> : ""}
             </main>
         </>
     )
