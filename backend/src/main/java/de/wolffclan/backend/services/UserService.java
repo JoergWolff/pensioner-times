@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -68,7 +69,11 @@ public class UserService {
     public User updateUser(String userId, User user) {
         if (existUserById(userId)) {
             User existUser = getUserById(userId);
-            List<Hobby> newHobbies = user.hobbies().forEach((hobby) => {updateHobby(hobby)});
+            List<Hobby> newHobbies = user.hobbies().stream()
+                                        .map(this::updateHobby)
+                                        .collect(Collectors.toMap(Hobby::name,hobby -> hobby,(existing, replacement)->existing))
+                                        .values().stream().toList();
+
             User savingUser = new User(
                     existUser.id(),
                     user.firstName(),

@@ -125,6 +125,39 @@ class UserServiceTest {
         verify(userRepository, times(1)).findById(invalidId);
     }
 
+    @Test
+    void updateUser_ReturnsUpdatedUser() {
+
+        // GIVEN
+        User existingUser = createUser();
+        User updateForUser = new User("1","TestUpdate", "TestTheBestUpdate", "test@testmail.test", birthDay, hobbies,true, Instant.now(),Instant.now());
+        when(userRepository.existsById("1")).thenReturn(true);
+        when(userRepository.findById("1")).thenReturn(Optional.of(existingUser));
+        // WHEN
+        User updatedUser = userService.updateUser("1",updateForUser);
+        // THEN
+        assertNotNull(updatedUser);
+        assertEquals(updateForUser.firstName(), updatedUser.firstName());
+        assertEquals(updateForUser.lastName(), updatedUser.lastName());
+        assertEquals(updateForUser.email(), updatedUser.email());
+        assertEquals(updateForUser.birthDay(), updatedUser.birthDay());
+        verify(userRepository, times(1)).save(any(User.class));
+
+    }
+
+    @Test
+    void updateUser_ReturnsNoSuchElementException() {
+
+        // GIVEN
+        User updateForUser = new User("1","TestUpdate", "TestTheBestUpdate", "test@testmail.test", birthDay, hobbies,true, Instant.now(),Instant.now());
+        when(userRepository.existsById("1")).thenReturn(false);
+        // WHEN
+        assertThrows(NoSuchElementException.class, () -> userService.updateUser("1", updateForUser));
+        // THEN
+        verify(userRepository, never()).save(any());
+
+    }
+
     private static User createUser() {
 
         List<Hobby> hobbies = createHobbies();
@@ -151,4 +184,5 @@ class UserServiceTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return LocalDate.parse(birthDayAsString, formatter);
     }
+
 }

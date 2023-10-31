@@ -47,7 +47,7 @@ class UserControllerTest {
     @DirtiesContext
     void getAllUsers_ReturnsArrayOfUsers() throws Exception {
         // GIVEN
-        User user = createUser();
+        User user = createTestUser();
         userRepository.save(user);
 
         mockMvc.perform(MockMvcRequestBuilders.get(apiString))
@@ -122,9 +122,9 @@ class UserControllerTest {
 
     @Test
     @DirtiesContext
-    void postUser_ReturnEmailExist() throws Exception {
+    void postUser_ReturnsEmailExist() throws Exception {
         // GIVEN
-        User user = createUser();
+        User user = createTestUser();
         userRepository.save(user);
         // WHEN
         mockMvc.perform(MockMvcRequestBuilders.post(apiString)
@@ -145,9 +145,9 @@ class UserControllerTest {
 
     @Test
     @DirtiesContext
-    void postUser_ReturnTooFewInputs() throws Exception {
+    void postUser_ReturnsTooFewInputs() throws Exception {
         // GIVEN
-        User user = createUser();
+        User user = createTestUser();
         userRepository.save(user);
         // WHEN
         mockMvc.perform(MockMvcRequestBuilders.post(apiString)
@@ -170,7 +170,7 @@ class UserControllerTest {
     @DirtiesContext
     void getUserById_ReturnsOneUser() throws Exception {
         // GIVEN
-        User user = createUser();
+        User user = createTestUser();
         userRepository.save(user);
         // WHEN
         mockMvc.perform(MockMvcRequestBuilders.get(apiString + "/" + user.id()))
@@ -203,7 +203,7 @@ class UserControllerTest {
     @DirtiesContext
     void getUserById_ReturnsNotFounded() throws Exception {
         // GIVEN
-        User user = createUser();
+        User user = createTestUser();
         userRepository.save(user);
         String falseId = "1231";
         // WHEN
@@ -213,11 +213,80 @@ class UserControllerTest {
                 .andExpect(content().string("User with id: " + falseId + " not founded..."));
     }
 
-    private static User createUser() {
+    @Test
+    @DirtiesContext
+    void putUser_ReturnsUpdatedUser() throws Exception {
+        // GIVEN
+        User user = createTestUser();
+        userRepository.save(user);
+        // WHEN
+        mockMvc.perform(MockMvcRequestBuilders.put(apiString + "/update/" + user.id())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                """
+                                        {
+                                            "firstName": "TestUpdate",
+                                             "lastName": "TestTheBestUpdate",
+                                             "email": "updatetest@testmail.test",
+                                             "birthDay": "2009-10-25",
+                                             "hobbies": [
+                                                            {
+                                                                "name": "Test Hobby"
+                                                             }
+                                                        ]
+                                        }
+                                        """
+                        ))
+                // THEN
+                .andExpect(status().isOk())
+                .andExpect(content().json(
+                        """
+                                {
+                                    "firstName": "TestUpdate",
+                                     "lastName": "TestTheBestUpdate",
+                                     "email": "updatetest@testmail.test",
+                                     "birthDay": "2009-10-25",
+                                     "hobbies": [
+                                                    {
+                                                        "name": "Test Hobby"
+                                                     }
+                                                ]
+                                }
+                                """))
+                .andExpect(jsonPath("$.id").isNotEmpty());
+    }
 
-        String birthDay = "2009-10-25";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date = LocalDate.parse(birthDay, formatter);
+    @Test
+    void putUser_ReturnsNoUser() throws Exception {
+        // GIVEN
+        User user = createTestUser();
+        userRepository.save(user);
+        // WHEN
+        mockMvc.perform(MockMvcRequestBuilders.put(apiString + "/update/d9b9-39ab-46a9-8fa5-19a5e931")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                """
+                                        {
+                                            "firstName": "TestUpdate",
+                                             "lastName": "TestTheBestUpdate",
+                                             "email": "updatetest@testmail.test",
+                                             "birthDay": "2009-10-25",
+                                             "hobbies": [
+                                                            {
+                                                                "name": "Test Hobby"
+                                                             }
+                                                        ]
+                                        }
+                                        """
+                        ))
+                // THEN
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("User id dosen't exists..."));
+    }
+
+    private static User createTestUser() {
+
+        LocalDate birthday = createTestBirthday();
 
         Instant instant = Instant.parse("2023-10-22T13:10:23.415Z");
         return new User(
@@ -225,10 +294,16 @@ class UserControllerTest {
                 "Test",
                 "TestTheBest",
                 "test@testmail.test",
-                date,
+                birthday,
                 List.of(new Hobby("1", "Test Hobby", true, instant, instant)),
                 true,
                 instant,
                 instant);
+    }
+
+    private static LocalDate createTestBirthday() {
+        String birthDay = "2009-10-25";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return LocalDate.parse(birthDay, formatter);
     }
 }
