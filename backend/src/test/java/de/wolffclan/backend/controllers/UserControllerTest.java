@@ -2,7 +2,7 @@ package de.wolffclan.backend.controllers;
 
 import de.wolffclan.backend.models.hobby.Hobby;
 import de.wolffclan.backend.models.user.User;
-import de.wolffclan.backend.repositories.UserRepository;
+import de.wolffclan.backend.repositories.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

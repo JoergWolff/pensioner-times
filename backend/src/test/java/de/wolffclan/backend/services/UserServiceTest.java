@@ -3,7 +3,9 @@ package de.wolffclan.backend.services;
 import de.wolffclan.backend.models.hobby.Hobby;
 import de.wolffclan.backend.models.user.NewUser;
 import de.wolffclan.backend.models.user.User;
-import de.wolffclan.backend.repositories.UserRepository;
+import de.wolffclan.backend.repositories.user.UserRepository;
+import de.wolffclan.backend.services.hobby.HobbyCollectorService;
+import de.wolffclan.backend.services.user.UserService;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -24,7 +26,8 @@ class UserServiceTest {
     static List<Hobby> hobbies = createHobbies();
 
     UserRepository userRepository = mock(UserRepository.class);
-    UserService userService = new UserService(userRepository);
+    HobbyCollectorService hobbyCollectorService = mock(HobbyCollectorService.class);
+    UserService userService = new UserService(userRepository, hobbyCollectorService);
 
     @Test
     void getAllUsers() {
