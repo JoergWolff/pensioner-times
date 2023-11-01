@@ -1,12 +1,12 @@
-import {ReactNode} from "react";
+
 
 type HeaderProps = {
-    children: ReactNode
+    headAddOn: string
 }
-export default function Header(props:HeaderProps) {
+export default function Header(props: Readonly<HeaderProps>) {
     return (
         <header>
-            <h1>Pensioner Times {props.children}</h1>
+            <h1>Pensioner Times {props.headAddOn}</h1>
         </header>
     )
 }

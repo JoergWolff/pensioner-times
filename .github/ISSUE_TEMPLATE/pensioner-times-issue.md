@@ -9,7 +9,7 @@ assignees: JoergWolff
 
 ## Value Proposition
 
-**As a** User 
+**As a** UserModel 
 **I want to** ...
 **so that** ...
 

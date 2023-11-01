@@ -2,13 +2,13 @@ import Navigation from "../navigation/Navigation.tsx";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import UserCard from "./UserCard.tsx";
-import {User} from "../../models/user/User.tsx";
+import {UserModel} from "../../models/user/UserModel.tsx";
 import Header from "../header/Header.tsx";
 import {ApiPaths} from "../../helpers/ApiPaths.tsx";
 
 export default function UserGallery() {
     const uri: string = ApiPaths.USER_API
-    const [users, setUsers] = useState<User[]>();
+    const [users, setUsers] = useState<UserModel[]>();
     useEffect(() => {
         getAllUsers()
     }, );
@@ -22,7 +22,7 @@ export default function UserGallery() {
 
     return (
         <>
-            <Header children={"User Gallery"}/>
+            <Header headAddOn={"UserModel Gallery"}/>
             <Navigation site={"UserGallery"}/>
             <main>
                 {users?.map((user) =>(

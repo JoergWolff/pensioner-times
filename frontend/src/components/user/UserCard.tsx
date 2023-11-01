@@ -1,11 +1,11 @@
-import {User} from "../../models/user/User.tsx";
+import {UserModel} from "../../models/user/UserModel.tsx";
 import {AgeCalculator} from "../../helpers/AgeCalculator.tsx";
 import {Link} from "react-router-dom";
 
 type UserProps = {
-    user: User
+    user: UserModel
 }
-export default function UserCard(props:UserProps){
+export default function UserCard(props: Readonly<UserProps>){
     const age = AgeCalculator(props.user.birthDay)
     return(
         <article>
