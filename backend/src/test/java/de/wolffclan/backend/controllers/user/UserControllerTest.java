@@ -1,4 +1,4 @@
-package de.wolffclan.backend.controllers;
+package de.wolffclan.backend.controllers.user;
 
 import de.wolffclan.backend.models.hobby.Hobby;
 import de.wolffclan.backend.models.user.User;

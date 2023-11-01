@@ -1,11 +1,10 @@
-package de.wolffclan.backend.services;
+package de.wolffclan.backend.services.user;
 
 import de.wolffclan.backend.models.hobby.Hobby;
 import de.wolffclan.backend.models.user.NewUser;
 import de.wolffclan.backend.models.user.User;
 import de.wolffclan.backend.repositories.user.UserRepository;
 import de.wolffclan.backend.services.hobby.HobbyCollectorService;
-import de.wolffclan.backend.services.user.UserService;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -24,7 +23,6 @@ class UserServiceTest {
     static Instant instant = Instant.parse("2023-10-22T13:10:23.415Z");
     static LocalDate birthDay = createLocalDate(birthDayString);
     static List<Hobby> hobbies = createHobbies();
-
     UserRepository userRepository = mock(UserRepository.class);
     HobbyCollectorService hobbyCollectorService = mock(HobbyCollectorService.class);
     UserService userService = new UserService(userRepository, hobbyCollectorService);
