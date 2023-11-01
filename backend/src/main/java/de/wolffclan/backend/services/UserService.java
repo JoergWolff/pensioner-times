@@ -63,12 +63,12 @@ public class UserService {
 
     public User getUserById(String id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("User with id: " + id + " not founded..."));
+                .orElseThrow(() -> new NoSuchElementException("User with id: " + id + " not found..."));
     }
 
-    public User updateUser(String userId, User user) {
-        if (existUserById(userId)) {
-            User existUser = getUserById(userId);
+    public User updateUser(String id, User user) {
+        if (existUserById(id)) {
+            User existUser = getUserById(id);
             List<Hobby> newHobbies = user.hobbies().stream()
                                         .map(this::updateHobby)
                                         .collect(Collectors.toMap(Hobby::name,hobby -> hobby,(existing, replacement)->existing))
@@ -88,6 +88,15 @@ public class UserService {
             userRepository.save(savingUser);
 
             return savingUser;
+        }
+        throw new NoSuchElementException("User id dosen't exists...");
+    }
+
+    public User deleteUser(String id) {
+        if (existUserById(id)) {
+            User deletedUser = getUserById(id);
+            userRepository.deleteById(id);
+            return deletedUser;
         }
         throw new NoSuchElementException("User id dosen't exists...");
     }

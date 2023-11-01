@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -210,7 +211,7 @@ class UserControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get(apiString + "/" + falseId))
                 // THEN
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("User with id: " + falseId + " not founded..."));
+                .andExpect(content().string("User with id: " + falseId + " not found..."));
     }
 
     @Test
@@ -257,6 +258,7 @@ class UserControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void putUser_ReturnsNoUser() throws Exception {
         // GIVEN
         User user = createTestUser();
@@ -282,6 +284,29 @@ class UserControllerTest {
                 // THEN
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("User id dosen't exists..."));
+    }
+
+    @Test
+    @DirtiesContext
+    void deleteUser_ReturnsDeletedUser() throws Exception {
+        // GIVEN
+        User deletingUser = createTestUser();
+        userRepository.save(deletingUser);
+        // THEN
+        mockMvc.perform(MockMvcRequestBuilders.delete(apiString + "/delete/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value("1"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value("Test"));
+    }
+
+    @Test
+    void deleteUser_ReturnsNoUser() throws Exception {
+        // THEN
+        mockMvc.perform(MockMvcRequestBuilders.delete(apiString + "/delete/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().string("User id dosen't exists..."));
     }
 
     private static User createTestUser() {

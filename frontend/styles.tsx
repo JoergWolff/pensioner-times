@@ -54,7 +54,7 @@ export const GlobalStyle = createGlobalStyle`
     display: flex;
     justify-content: space-evenly;
     position: absolute;
-    top: 2.5em;
+    top: 2.4em;
     right: 0;
     left: 0;
     padding: 0.3em;
@@ -68,9 +68,9 @@ export const GlobalStyle = createGlobalStyle`
     flex-direction: column;
     align-items: center;
     position: absolute;
-    top: 6em;
+    top: 5.5em;
     right: 5em;
-    bottom: 5em;
+    bottom: 0.5em;
     left: 5em;
     overflow: scroll;
     overflow-y: auto;
@@ -114,6 +114,15 @@ export const GlobalStyle = createGlobalStyle`
   background-color: wheat;
     color: darkslategray;
     padding: 0.5em;
+    width: 6em;
+  }
+  
+  button{
+    background-color: wheat;
+    color: darkslategray;
+    padding: 0.4em;
+    border: none;
+    border-radius: 5em;
     width: 6em;
   }
 

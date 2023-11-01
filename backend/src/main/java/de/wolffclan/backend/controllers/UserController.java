@@ -51,13 +51,24 @@ public class UserController {
         }
     }
 
-    @PutMapping("/update/{userId}")
-    public ResponseEntity<Object> putUser(@PathVariable String userId, @RequestBody User user) {
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Object> putUser(@PathVariable String id, @RequestBody User user) {
         try {
-            User savedUser = userService.updateUser(userId, user);
+            User savedUser = userService.updateUser(id, user);
             return ResponseEntity.ok(savedUser);
         } catch (NoSuchElementException exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public  ResponseEntity<Object> deleteUser(@PathVariable String id){
+        try{
+            User deletedUser = userService.deleteUser(id);
+            return ResponseEntity.ok(deletedUser);
+        }catch (NoSuchElementException exception){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+
         }
     }
 }
