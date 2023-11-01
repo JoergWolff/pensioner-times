@@ -1,9 +1,10 @@
-package de.wolffclan.backend.services;
+package de.wolffclan.backend.services.user;
 
 import de.wolffclan.backend.models.hobby.Hobby;
 import de.wolffclan.backend.models.user.NewUser;
 import de.wolffclan.backend.models.user.User;
-import de.wolffclan.backend.repositories.UserRepository;
+import de.wolffclan.backend.repositories.user.UserRepository;
+import de.wolffclan.backend.services.hobby.HobbyCollectorService;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -16,9 +17,11 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final HobbyCollectorService hobbyCollectorService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, HobbyCollectorService hobbyCollectorService) {
         this.userRepository = userRepository;
+        this.hobbyCollectorService = hobbyCollectorService;
     }
 
     public List<User> getAllUsers() {
@@ -31,6 +34,7 @@ public class UserService {
             if (!existEmail(newUser.email())) {
                 if (newUser.hobbies() != null) {
                     for (Hobby hobby : newUser.hobbies()) {
+                        hobbyCollectorService.saveHobbyCollector(hobby.name());
                         hobbyList.add(
                                 new Hobby(
                                         UUID.randomUUID().toString(),
@@ -103,21 +107,25 @@ public class UserService {
 
     private Hobby updateHobby(Hobby hobby) {
         if (hobby.id() != null) {
-            return new Hobby(
+            Hobby updatedHobby = new Hobby(
                     hobby.id(),
                     hobby.name(),
                     hobby.isActive(),
                     hobby.createdAt(),
                     Instant.now()
             );
+            hobbyCollectorService.saveHobbyCollector(hobby.name());
+            return updatedHobby;
         }
-        return new Hobby(
+        Hobby updatedHobby = new Hobby(
                 UUID.randomUUID().toString(),
                 hobby.name(),
                 true,
                 Instant.now(),
                 Instant.now()
         );
+        hobbyCollectorService.saveHobbyCollector(hobby.name());
+        return updatedHobby;
     }
 
     private boolean existEmail(String email) {

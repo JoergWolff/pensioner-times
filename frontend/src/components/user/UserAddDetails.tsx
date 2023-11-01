@@ -1,13 +1,13 @@
 import Header from "../header/Header.tsx";
 import Navigation from "../navigation/Navigation.tsx";
 import {ChangeEvent, FormEvent, useEffect, useState} from "react";
-import {User} from "../../models/user/User.tsx";
+import {UserModel} from "../../models/user/UserModel.tsx";
 import {ApiPaths} from "../../helpers/ApiPaths.tsx";
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 import {HobbyInputModel} from "../../models/hobby/HobbyInputModel.tsx";
 import HobbyInput from "../hobby/HobbyInput.tsx";
-import {Hobby} from "../../models/hobby/Hobby.tsx";
+import {HobbyModel} from "../../models/hobby/HobbyModel.tsx";
 
 export default function UserAddDetails() {
 
@@ -22,7 +22,7 @@ export default function UserAddDetails() {
     const [lastName, setLastName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [birthDay, setBirthDay] = useState<string>("");
-    const [hobbies, setHobbies] = useState<Hobby[]>([]);
+    const [hobbies, setHobbies] = useState<HobbyModel[]>([]);
     const [fieldSetCounter, setFieldSetCounter] = useState(1)
     const [hobbyInputFields, setHobbyInputFields] = useState<HobbyInputModel[]>([])
 
@@ -41,7 +41,7 @@ export default function UserAddDetails() {
             });
     }
 
-    function setUserDetails(userInformation: User) {
+    function setUserDetails(userInformation: UserModel) {
         if (userInformation) {
             if(userInformation.id){
                 setId(userInformation.id)
@@ -54,7 +54,7 @@ export default function UserAddDetails() {
                 setHobbies(userInformation.hobbies)
                 let counter: number = 1
                 const hobbyInputs: HobbyInputModel[] = []
-                userInformation.hobbies.forEach((hobby: Hobby) => {
+                userInformation.hobbies.forEach((hobby: HobbyModel) => {
                     hobbyInputs.push({"id": counter.toString(), "value": hobby.name})
                     counter++
                 })
@@ -103,7 +103,7 @@ export default function UserAddDetails() {
         const fieldSet = document.getElementById("fieldSet");
             if (fieldSet) {
                 const inputFields = fieldSet.querySelectorAll("input[name='hobby']");
-                const values: Hobby[] = [];
+                const values: HobbyModel[] = [];
 
                 inputFields.forEach((element) => {
                     if (element instanceof HTMLInputElement) {
@@ -122,7 +122,7 @@ export default function UserAddDetails() {
         event.preventDefault()
         if (event) {
             getValuesFromFieldSet()
-            const user: User = {
+            const user: UserModel = {
                 id:id,
                 firstName: firstName,
                 lastName: lastName,
@@ -156,7 +156,7 @@ export default function UserAddDetails() {
 
     return (
         <>
-            {paramId ? <Header children={"Detail User"}/> : <Header children={"New User"}/>}
+            {paramId ? <Header headAddOn={"Detail UserModel"}/> : <Header headAddOn={"New UserModel"}/>}
             <Navigation site={"UserAddDetails"}/>
             <main>
                 {paramId ? <h2>Your Information's</h2> : <h2>Create Information's</h2>}
@@ -176,7 +176,7 @@ export default function UserAddDetails() {
                                         onHandleRemoveHobby={onHandleRemoveHobby}/>)}
                     </fieldset>
 
-                    <input type="button" value="Add Hobby" onClick={onHandleAddHobby}/>
+                    <input type="button" value="Add HobbyModel" onClick={onHandleAddHobby}/>
                     <div className="fieldset_div">
                         <input type="button" value="CANCEL" className="fieldset_button" onClick={onHandleCancel}/>
                         {paramId ?

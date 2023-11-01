@@ -1,4 +1,4 @@
-export type Hobby = {
+export type HobbyModel = {
     id?: string,
     name: string,
     isActive?: boolean

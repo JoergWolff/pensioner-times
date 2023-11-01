@@ -1,11 +1,11 @@
-import {Hobby} from "../hobby/Hobby.tsx";
+import {HobbyModel} from "../hobby/HobbyModel.tsx";
 
-export type User = {
+export type UserModel = {
     id?:string,
     firstName: string,
     lastName: string,
     email: string,
     birthDay: string,
-    hobbies?: Hobby[],
+    hobbies?: HobbyModel[],
     isActive?: boolean
 }

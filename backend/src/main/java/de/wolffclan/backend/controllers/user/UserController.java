@@ -1,8 +1,8 @@
-package de.wolffclan.backend.controllers;
+package de.wolffclan.backend.controllers.user;
 
 import de.wolffclan.backend.models.user.NewUser;
 import de.wolffclan.backend.models.user.User;
-import de.wolffclan.backend.services.UserService;
+import de.wolffclan.backend.services.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,8 +1,8 @@
-package de.wolffclan.backend.controllers;
+package de.wolffclan.backend.controllers.user;
 
 import de.wolffclan.backend.models.hobby.Hobby;
 import de.wolffclan.backend.models.user.User;
-import de.wolffclan.backend.repositories.UserRepository;
+import de.wolffclan.backend.repositories.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -65,7 +65,7 @@ class UserControllerTest {
                                 "hobbies": [
                                                 {
                                                 "id": "1",
-                                                "name": "Test Hobby",
+                                                "name": "Test HobbyModel",
                                                 "isActive": true,
                                                 "createdAt": "2023-10-22T13:10:23.415Z",
                                                 "updatedAt": "2023-10-22T13:10:23.415Z"
@@ -95,7 +95,7 @@ class UserControllerTest {
                                              "birthDay": "2009-10-25",
                                              "hobbies": [
                                                             {
-                                                                "name": "Test Hobby"
+                                                                "name": "Test HobbyModel"
                                                              }
                                                         ]
                                         }
@@ -112,7 +112,7 @@ class UserControllerTest {
                                      "birthDay": "2009-10-25",
                                      "hobbies": [
                                                     {
-                                                        "name": "Test Hobby"
+                                                        "name": "Test HobbyModel"
                                                      }
                                                 ]
                                 }
@@ -187,7 +187,7 @@ class UserControllerTest {
                                                  "hobbies": [
                                                                         {
                                                                         "id": "1",
-                                                                        "name": "Test Hobby",
+                                                                        "name": "Test HobbyModel",
                                                                         "isActive": true,
                                                                         "createdAt": "2023-10-22T13:10:23.415Z",
                                                                         "updatedAt": "2023-10-22T13:10:23.415Z"
@@ -232,7 +232,7 @@ class UserControllerTest {
                                              "birthDay": "2009-10-25",
                                              "hobbies": [
                                                             {
-                                                                "name": "Test Hobby"
+                                                                "name": "Test HobbyModel"
                                                              }
                                                         ]
                                         }
@@ -249,7 +249,7 @@ class UserControllerTest {
                                      "birthDay": "2009-10-25",
                                      "hobbies": [
                                                     {
-                                                        "name": "Test Hobby"
+                                                        "name": "Test HobbyModel"
                                                      }
                                                 ]
                                 }
@@ -275,7 +275,7 @@ class UserControllerTest {
                                              "birthDay": "2009-10-25",
                                              "hobbies": [
                                                             {
-                                                                "name": "Test Hobby"
+                                                                "name": "Test HobbyModel"
                                                              }
                                                         ]
                                         }
@@ -320,7 +320,7 @@ class UserControllerTest {
                 "TestTheBest",
                 "test@testmail.test",
                 birthday,
-                List.of(new Hobby("1", "Test Hobby", true, instant, instant)),
+                List.of(new Hobby("1", "Test HobbyModel", true, instant, instant)),
                 true,
                 instant,
                 instant);
