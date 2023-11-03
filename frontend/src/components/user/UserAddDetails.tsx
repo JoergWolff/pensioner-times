@@ -156,7 +156,7 @@ export default function UserAddDetails() {
 
     return (
         <>
-            {paramId ? <Header headAddOn={"Detail UserModel"}/> : <Header headAddOn={"New UserModel"}/>}
+            {paramId ? <Header headAddOn={"Detail User"}/> : <Header headAddOn={"New User"}/>}
             <Navigation site={"UserAddDetails"}/>
             <main>
                 {paramId ? <h2>Your Information's</h2> : <h2>Create Information's</h2>}
