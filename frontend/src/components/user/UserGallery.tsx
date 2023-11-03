@@ -22,7 +22,7 @@ export default function UserGallery() {
 
     return (
         <>
-            <Header headAddOn={"UserModel Gallery"}/>
+            <Header headAddOn={"User Gallery"}/>
             <Navigation site={"UserGallery"}/>
             <main>
                 {users?.map((user) =>(
