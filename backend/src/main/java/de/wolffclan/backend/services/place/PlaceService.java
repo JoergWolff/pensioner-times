@@ -37,15 +37,22 @@ public class PlaceService {
 
     public Place getPlaceById(String id){
         return placeRepository.findById(id)
-                .orElseThrow(()-> new NoSuchElementException("Place with id: " + id + " not found..."));
+                .orElseThrow(()-> new NoSuchElementException(idNotFound(id)));
     }
 
     public Place updatePlace(String id, Place place){
         if(existPlaceById(id)){
-            placeRepository.save(place);
-            return place;
+            Place updatedPlace = new Place(
+                    id,
+                    place.town(),
+                    place.postalCode(),
+                    place.street(),
+                    place.description()
+            );
+            placeRepository.save(updatedPlace);
+            return updatedPlace;
         }
-        throw new NoSuchElementException("Place id dosen't exists...");
+        throw new NoSuchElementException(idNotFound(id));
     }
 
     public Place deletePlace(String id){
@@ -54,8 +61,11 @@ public class PlaceService {
             placeRepository.deleteById(id);
             return deletedPlace;
         }
-        throw new NoSuchElementException("Place id dosen't exists...");
+        throw new NoSuchElementException(idNotFound(id));
     }
 
+    private String idNotFound(String id){
+        return "Place with id: " + id + " not found...";
+    }
     private boolean existPlaceById(String id){return  placeRepository.existsById(id);}
 }
