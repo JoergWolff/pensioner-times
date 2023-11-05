@@ -13,4 +13,12 @@ public record NewDate(
         List<String> userIds,
         String placeId
 ) {
+    public boolean isValid() {
+        return (this.meetingDay != null)
+                && (this.meetingTime != null)
+                && (this.maxUser >= 1)
+                && (this.userCounter >= 1)
+                && (this.userIds != null)
+                && (this.placeId != null);
+    }
 }
