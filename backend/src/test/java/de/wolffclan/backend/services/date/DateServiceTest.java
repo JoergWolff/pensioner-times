@@ -35,7 +35,7 @@ class DateServiceTest {
     }
 
     @Test
-    void saveDate_ReturnsDate() throws Exception {
+    void saveDate_ReturnsDate() {
         // GIVEN
         NewDate newDate = new NewDate(
                 createLocalDate("2023-02-23"),
@@ -72,7 +72,7 @@ class DateServiceTest {
     }
 
     @Test
-    void saveDateReturnsTooFewInput() throws Exception {
+    void saveDateReturnsTooFewInput() {
         // GIVEN
         NewDate newDate = new NewDate(
                 createLocalDate("2023-02-23"),
@@ -89,7 +89,7 @@ class DateServiceTest {
     }
 
     @Test
-    void saveDate_ReturnsNoUserId() throws Exception {
+    void saveDate_ReturnsNoUserId() {
         // GIVEN
         NewDate newDate = new NewDate(
                 createLocalDate("2023-02-23"),
