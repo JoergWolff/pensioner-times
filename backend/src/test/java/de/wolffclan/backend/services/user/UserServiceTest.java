@@ -117,7 +117,7 @@ class UserServiceTest {
 
         // GIVEN
         String invalidId = "invalid";
-        when(userRepository.findById(invalidId)).thenReturn(java.util.Optional.empty());
+        when(userRepository.findById(invalidId)).thenReturn(Optional.empty());
 
         // WHEN
         assertThrows(NoSuchElementException.class, () -> userService.getUserById(invalidId));
