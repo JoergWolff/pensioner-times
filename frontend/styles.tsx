@@ -2,7 +2,7 @@ import {createGlobalStyle} from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
   :root {
-    --total-border: 0px solid lime;
+    --total-border: 1px solid lime;
     --main-background-color: darkslategrey;
     --main-color: wheat;
     --header-background-color: wheat;
@@ -68,20 +68,21 @@ export const GlobalStyle = createGlobalStyle`
     flex-direction: column;
     align-items: center;
     position: absolute;
-    top: 5.5em;
-    right: 5em;
+    top: 5em;
+    right: 0;
     bottom: 0.5em;
-    left: 5em;
+    left: 0;
     overflow: scroll;
     overflow-y: auto;
     overflow-x: hidden;
-    border: var(--total-border);
+    border: 1px solid red;
   }
 
   article {
-    padding: 2em;
-    margin: 0.5em;
+    padding: 1em;
     border: var(--total-border);
+    border-radius: 2em;
+    width: 20em;
   }
 
   form {
@@ -92,11 +93,33 @@ export const GlobalStyle = createGlobalStyle`
     border: var(--total-border);
   }
 
+  .form_button_div {
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  .form_button {
+    background-color: wheat;
+    color: darkslategray;
+    padding: 0.5em;
+    width: 6em;
+  }
+
   input {
     margin: 1em;
     padding: 0.5em;
     border: none;
     border-radius: 5em;
+  }
+
+  textarea {
+    margin: 1em;
+    padding: 0.5em;
+    border: none;
+    overflow: hidden;
+    border-radius: 1em;
+    text-align: center;
+    resize: none;
   }
 
   fieldset {
@@ -105,19 +128,7 @@ export const GlobalStyle = createGlobalStyle`
     border: var(--total-border);
   }
 
-  .fieldset_div {
-    display: flex;
-    justify-content: space-evenly;
-  }
-
-  .fieldset_button {
-  background-color: wheat;
-    color: darkslategray;
-    padding: 0.5em;
-    width: 6em;
-  }
-  
-  button{
+  button {
     background-color: wheat;
     color: darkslategray;
     padding: 0.4em;
@@ -132,6 +143,10 @@ export const GlobalStyle = createGlobalStyle`
     border: var(--total-border);
   }
 
+  p {
+  margin: 0.5em;
+  }
+
   a {
     background-color: var(--link-background-color);
     color: var(--link-color);
@@ -139,6 +154,6 @@ export const GlobalStyle = createGlobalStyle`
     text-align: center;
     padding: 0.3em;
     border-radius: 0.5em;
-    width: 6em;
+    min-width: 7em;
   }
 `;
