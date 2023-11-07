@@ -1,10 +1,10 @@
-package de.wolffclan.backend.models.date;
+package de.wolffclan.backend.models.meeting;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-public record Date(
+public record Meeting(
         String id,
         LocalDate meetingDay,
         LocalTime meetingTime,
