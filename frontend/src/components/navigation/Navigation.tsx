@@ -5,7 +5,7 @@ type NavigationProps = {
     site: string
     loginUser: UserModel | undefined
 }
-export default function Navigation(props: Readonly<NavigationProps>) {
+export default function Navigation(props:NavigationProps) {
     return (
         <>
             {props.site == "Home" &&
