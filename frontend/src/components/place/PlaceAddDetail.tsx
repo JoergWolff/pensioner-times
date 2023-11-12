@@ -98,7 +98,7 @@ export default function PlaceAddDetail() {
     return (
         <>
             {paramId ? <Header headAddOn="Detail Place"/> : <Header headAddOn="New Place"/>}
-            <Navigation site="PlaceAddDetail"/>
+            <Navigation loginUser={undefined} site="PlaceAddDetail"/>
             <main>
                 <form onSubmit={onHandleSubmit}>
                     <label htmlFor="town">Town:</label>
