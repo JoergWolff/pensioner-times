@@ -117,7 +117,7 @@ export default function MeetingAddDetail() {
     return (
         <>
             {paramId ? <Header headAddOn={"Detail Meeting"}/> : <Header headAddOn={"New Meeting"}/>}
-            <Navigation site={"MeetingAddDetail"}/>
+            <Navigation loginUser={undefined} site={"MeetingAddDetail"}/>
             <main>
                 {paramId ? <h2>Your Meeting</h2> : <h2>Create Meeting</h2>}
                 <form onSubmit={onHandelSubmit}>
