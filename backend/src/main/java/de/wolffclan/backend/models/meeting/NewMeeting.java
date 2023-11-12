@@ -16,7 +16,7 @@ public record NewMeeting(
     public boolean isValid() {
         return (this.meetingDay != null)
                 && (this.meetingTime != null)
-                && (this.maxUser >= 1)
+                && (this.maxUser >= 2)
                 && (this.userCounter >= 1)
                 && (this.userIds != null)
                 && (this.placeId != null);
