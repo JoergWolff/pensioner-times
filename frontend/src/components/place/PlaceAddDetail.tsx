@@ -111,7 +111,7 @@ export default function PlaceAddDetail() {
                     <label htmlFor="description">Description:</label>
                     <textarea name="description" rows={5} onInput={onChangeDescription} value={description}/>
                     <div className="form_button_div">
-                        <input type="button" value="Cancel" className="form_button" onClick={onHandleCancel}/>
+                        <input type="button" value="CANCEL" className="form_button" onClick={onHandleCancel}/>
                         {paramId ?
                             <input type="submit" value="UPDATE" className="form_button"/>
                             :
