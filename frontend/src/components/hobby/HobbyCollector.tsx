@@ -5,8 +5,9 @@ type HobbyCollectorProps = {
 }
 export default function HobbyCollector(props: Readonly<HobbyCollectorProps>) {
     return (
-        <div>
-            <h3>{props.hobbyCollector.name} : {props.hobbyCollector.counter}</h3>
+        <div className="div_hobby_collector">
+            <p>{props.hobbyCollector.name}:</p>
+            <p>{props.hobbyCollector.counter}</p>
         </div>
     )
 }

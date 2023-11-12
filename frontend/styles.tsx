@@ -2,7 +2,7 @@ import {createGlobalStyle} from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
   :root {
-    --total-border: 1px solid lime;
+    --total-border: 1px solid wheat;
     --main-background-color: darkslategrey;
     --main-color: wheat;
     --header-background-color: wheat;
@@ -11,6 +11,10 @@ export const GlobalStyle = createGlobalStyle`
     --nav-color: darkslategrey;
     --link-background-color: darkslategrey;
     --link-color: wheat;
+
+    h1, h2, h3, h4, h5, h6 {
+      text-align: center;
+    }
   }
 
   *,
@@ -25,13 +29,11 @@ export const GlobalStyle = createGlobalStyle`
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     position: absolute;
     top: 0;
-    right: 20%;
     bottom: 0;
-    left: 20%;
-    max-width: 60%;
-    min-width: 30em;
+    min-width: 25.7em;
     font-family: system-ui;
     background-color: var(--main-background-color);
     color: var(--main-color);
@@ -40,7 +42,7 @@ export const GlobalStyle = createGlobalStyle`
 
   header {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     position: absolute;
     top: 0;
     right: 0;
@@ -50,17 +52,21 @@ export const GlobalStyle = createGlobalStyle`
     border: var(--total-border);
   }
 
+  .header_div {
+    margin: 0.9em;
+    font-size: 1em;
+    font-weight: bold;
+  }
+
   nav {
     display: flex;
     justify-content: space-evenly;
     position: absolute;
-    top: 2.4em;
     right: 0;
+    bottom: 0;
     left: 0;
     padding: 0.3em;
     background-color: var(--nav-background-color);
-    color: var(--nav-color);
-    border: var(--total-border);
   }
 
   main {
@@ -68,14 +74,15 @@ export const GlobalStyle = createGlobalStyle`
     flex-direction: column;
     align-items: center;
     position: absolute;
-    top: 5em;
+    top: 3.2em;
     right: 0;
-    bottom: 0.5em;
+    bottom: 2.5em;
     left: 0;
     overflow: scroll;
     overflow-y: auto;
     overflow-x: hidden;
-    border: 1px solid red;
+    border: var(--total-border);
+    padding: 1em;
   }
 
   article {
@@ -125,7 +132,7 @@ export const GlobalStyle = createGlobalStyle`
   fieldset {
     display: flex;
     flex-direction: column;
-    border: var(--total-border);
+    border: none;
   }
 
   button {
@@ -136,15 +143,33 @@ export const GlobalStyle = createGlobalStyle`
     border-radius: 5em;
     width: 6em;
   }
+  
+  .div_dash{
+    display: flex;
+    justify-content: space-between;
+    overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+  }
 
-  footer {
-    background-color: var(--nav-background-color);
-    color: var(--nav-color);
-    border: var(--total-border);
+  .div_home_announcement{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 20em;
+    text-align: center;
+  }
+  
+  .div_hobby_collector {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8em;
+    width: 10em;
   }
 
   p {
-  margin: 0.5em;
+    margin: 0.5em;
   }
 
   a {
@@ -153,7 +178,20 @@ export const GlobalStyle = createGlobalStyle`
     text-decoration: none;
     text-align: center;
     padding: 0.3em;
-    border-radius: 0.5em;
-    min-width: 7em;
+    border-radius: 0.6em;
+    min-width: 8em;
+  }
+  
+  .participate{
+    background-color: var( --header-background-color);
+    color: var(--header-color);
+  }
+  
+  @media screen and (min-width: 600px){
+    body{
+      min-width: 33em;
+      right: 10%;
+      left: 10%;
+    }
   }
 `;

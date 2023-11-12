@@ -5,8 +5,12 @@ import {useEffect, useState} from "react";
 import {PlaceModel} from "../../models/place/PlaceModel.tsx";
 import axios from "axios";
 import PlaceCard from "./PlaceCard.tsx";
+import {UserModel} from "../../models/user/UserModel.tsx";
 
-export default function PlaceGallery() {
+type PlaceGalleryProps = {
+    loginUser: UserModel | undefined
+}
+export default function PlaceGallery(props: Readonly<PlaceGalleryProps>) {
     const uri: string = ApiPaths.PLACE_API
     const [places, setPlaces] = useState<PlaceModel[]>()
     useEffect(() => {
@@ -24,11 +28,11 @@ export default function PlaceGallery() {
     return (
         <>
             <Header headAddOn="Place Gallery"/>
-            <Navigation site="PlaceGallery"/>
+            <Navigation loginUser={props.loginUser} site="PlaceGallery"/>
             <main>
                 {places?.map((place) => (
                         <div key={place.id}>
-                            <PlaceCard place={place}/>
+                            <PlaceCard loginUser={props.loginUser} place={place}/>
                         </div>
                     )
                 )}

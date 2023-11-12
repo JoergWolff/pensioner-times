@@ -9,10 +9,14 @@ import {HobbyInputModel} from "../../models/hobby/HobbyInputModel.tsx";
 import HobbyInput from "../hobby/HobbyInput.tsx";
 import {HobbyModel} from "../../models/hobby/HobbyModel.tsx";
 
-export default function UserAddDetails() {
+type UserAddDetailsProps = {
+    loginUser: UserModel | undefined
+}
 
-    const params = useParams()
-    const paramId: string | undefined = params.userId
+export default function UserAddDetails(props: Readonly<UserAddDetailsProps>) {
+
+    const params = useParams();
+    const paramId: string | undefined = params.userId;
 
     const navigate = useNavigate();
     const uri: string = ApiPaths.USER_API;
@@ -157,7 +161,7 @@ export default function UserAddDetails() {
     return (
         <>
             {paramId ? <Header headAddOn={"Detail User"}/> : <Header headAddOn={"New User"}/>}
-            <Navigation site={"UserAddDetails"}/>
+            <Navigation loginUser={props.loginUser} site={"UserAddDetails"}/>
             <main>
                 {paramId ? <h2>Your Information's</h2> : <h2>Create Information's</h2>}
                 <form onSubmit={onHandleSubmit}>
@@ -166,26 +170,30 @@ export default function UserAddDetails() {
                     <label htmlFor="lastName">Lastname:</label>
                     <input name="lastName" type="text" required onInput={onChangeLastName} value={lastName}/>
                     <label htmlFor="email">Email:</label>
-                    <input name="email" type="email" required onInput={onChangeEmail} value={email}/>
+                    {!paramId && <input name="email" type="email" required onInput={onChangeEmail} value={email}/>}
+                    {(paramId && props.loginUser?.id === id) &&
+                        <input name="email" type="email" required onInput={onChangeEmail} value={email}/>}
+                    {(paramId && props.loginUser?.id != id) &&
+                        <input name="email" type="email" required disabled onInput={onChangeEmail} value={email}/>}
                     <label htmlFor="birthDay">Birthday:</label>
                     <input name="birthDay" type="date" required onInput={onChangeBirthday} value={birthDay}/>
                     <label htmlFor="hobbies">Hobbies:</label>
                     <fieldset name="hobbies" id="fieldSet" onInput={onChangeHobbies}>
                         {hobbyInputFields.map((field) =>
-                            <HobbyInput key={field.id} hobbyInputModel={field}
+                            <HobbyInput key={field.id} loginUser={props.loginUser} hobbyInputModel={field}
                                         onHandleRemoveHobby={onHandleRemoveHobby}/>)}
                     </fieldset>
-
-                    <input type="button" value="Add HobbyModel" onClick={onHandleAddHobby}/>
-                    <div className="fieldset_div">
-                        <input type="button" value="CANCEL" className="fieldset_button" onClick={onHandleCancel}/>
+                    <input type="button" value="Add Hobby" onClick={onHandleAddHobby}/>
+                    <div className="form_button_div">
+                        <input type="button" value="CANCEL" className="form_button" onClick={onHandleCancel}/>
                         {paramId ?
-                            <input type="submit" value="UPDATE" className="fieldset_button"/>
+                            <input type="submit" value="UPDATE" className="form_button"/>
                             :
-                            <input type="submit" value="SAVE" className="fieldset_button"/>}
+                            <input type="submit" value="SAVE" className="form_button"/>
+                        }
                     </div>
                 </form>
-                {paramId ? <button onClick={onHandleDelete}>DELETE</button> : ""}
+                {paramId && props.loginUser?.id === id ? <button onClick={onHandleDelete}>DELETE</button> : ""}
             </main>
         </>
     )
